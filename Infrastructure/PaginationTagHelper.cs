@@ -24,6 +24,14 @@ namespace Mission11.Infrastructure
         public string? PageAction {  get; set; }
         public PaginationInfo PageModel { get; set; }
 
+        public bool PageClassEnabled { get; set; } = false;
+
+        public string PageClass {  get; set; } = string.Empty;
+
+        public string PageClassNormal {  get; set; } = string.Empty;
+
+        public string PageClassSelected { get; set; } = string.Empty;
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             if (ViewContext != null && PageModel != null) 
@@ -37,6 +45,12 @@ namespace Mission11.Infrastructure
                     TagBuilder tag = new TagBuilder("a");
 
                     tag.Attributes["href"] = urlHelper.Action(PageAction, new {pageNum = i});
+
+                    if (PageClassEnabled) 
+                    {
+                        tag.AddCssClass(PageClass);
+                        tag.AddCssClass(i == PageModel.CurrntPage ? PageClassSelected : PageClassNormal);
+                    }
 
                     tag.InnerHtml.Append(i.ToString());
 
